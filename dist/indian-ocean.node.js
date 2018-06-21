@@ -7058,7 +7058,7 @@ mkdirP.sync = function sync(p, opts, made) {
 
 /* istanbul ignore next */
 /**
- * Asynchronously create directories along a given file path. Delegates to [mkdirp](http://npmjs.org/package/mkdirp) module
+ * Asynchronously create directories along a given file path. Delegates to [mkdirp](http://npmjs.org/package/mkdirp) module. If the last element in your file path is also a folder, it must end in `/` or else it will be interpreted as a file and not created.
  *
  * @function makeDirectories
  * @param {String} outPath The path to a file
@@ -7066,6 +7066,11 @@ mkdirP.sync = function sync(p, opts, made) {
  *
  * @example
  * io.makeDirectories('path/to/create/to/data.tsv', function (err) {
+ *   console.log(err) // null
+ * })
+ *
+ * // Must end in `/` for the last item to be interpreted as a folder as well.
+ * io.makeDirectories('path/to/create/to/another-folder/', function (err) {
  *   console.log(err) // null
  * })
  *
@@ -7496,13 +7501,17 @@ function extMatchesStr(filePath, extension) {
 
 /* istanbul ignore next */
 /**
- * Synchronous version of {link #makeDirectories}. Delegates to [mkdirp](http://npmjs.org/package/mkdirp) module
+ * Synchronous version of {@link makeDirectories}. Delegates to [mkdirp](http://npmjs.org/package/mkdirp) module.
  *
  * @function makeDirectoriesSync
  * @param {String} outPath The path to a file
  *
  * @example
- * io.makeDirectories('path/to/create/to/data.tsv')
+ * io.makeDirectoriesSync('path/to/create/to/data.tsv')
+ *
+ * @example
+ * // Must end in `/` for the last item to be interpreted as a folder as well.
+ * io.makeDirectoriesSync('path/to/create/to/another-folder/')
  *
  */
 function makeDirectoriesSync(outPath) {
